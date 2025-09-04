@@ -11,10 +11,10 @@ services:
     ports:
       - ${API_PORT}:3000
     networks:
-      - suffgo-network
+      - default-network
     volumes:
       - ./app:/app:rw
-      #- ./.env:/app/.env:rw
+      - ./.env:/app/.env:rw
       # - ./go.mod:/app/go.mod:rw
       # - ./go.sum:/app/go.sum:rw
       # - ./main.go:/app/main.go:rw
@@ -36,11 +36,11 @@ services:
       - ./docker/volumes/data:/var/lib/postgresql/data
       - ./docker/volumes/backups:/backups
     networks:
-      - suffgo-network
+      - default-network
     env_file:
       - ./.env
 
 networks:
-  suffgo-network:
+  default-network:
     external: true  # Indica que es una red externa
 

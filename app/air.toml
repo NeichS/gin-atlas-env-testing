@@ -1,0 +1,11 @@
+# La raíz del proyecto es la carpeta donde está go.mod
+root = "."
+tmp_dir = "tmp"
+
+[build]
+# Compilamos el package ./cmd/api y dejamos el binario donde Air lo espera
+cmd = "go build -o ./tmp/main ./cmd/api && chmod +x ./tmp/main"
+bin = "./tmp/main"
+
+include_dir = ["cmd", "internal"]
+exclude_dir = ["tmp", "../docker"]
