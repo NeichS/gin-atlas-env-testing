@@ -1,0 +1,46 @@
+name: ${CONTAINER_NAME:?container name is not defined...}-postgres
+services:
+  app:
+    build:
+      context: .
+    container_name: ${CONTAINER_NAME:?container name is not defined...}-api
+    depends_on:
+      - db
+    env_file:
+      - .env
+    ports:
+      - ${API_PORT}:3000
+    networks:
+      - suffgo-network
+    volumes:
+      - ./app:/app:rw
+      #- ./.env:/app/.env:rw
+      # - ./go.mod:/app/go.mod:rw
+      # - ./go.sum:/app/go.sum:rw
+      # - ./main.go:/app/main.go:rw
+    extra_hosts:
+      - host.docker.internal:host-gateway
+        
+  db:
+    build: 
+      context: . 
+      target: database
+      dockerfile_inline: | 
+        FROM postgres:${POSTGRES_VERSION:-latest} as database
+        RUN localedef -i ${LOCALEDEF:-es_AR} -c -f UTF-8 -A /usr/share/locale/locale.alias ${LOCALEDEF:-es_AR}.UTF-8
+        ENV LANG ${LOCALEDEF:-es_AR}.utf8
+    restart: ${RESTART:-no}
+    ports:
+      - ${POSTGRES_PORT:-5432}:5432
+    volumes:
+      - ./docker/volumes/data:/var/lib/postgresql/data
+      - ./docker/volumes/backups:/backups
+    networks:
+      - suffgo-network
+    env_file:
+      - ./.env
+
+networks:
+  suffgo-network:
+    external: true  # Indica que es una red externa
+
