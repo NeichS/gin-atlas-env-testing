@@ -3,7 +3,7 @@
 package ent
 
 import (
-	"entdemo/internal/ent/user"
+	"entdemo/ent/user"
 	"fmt"
 	"strings"
 

@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"log"
 
-	"entdemo/internal/ent"
-	"entdemo/internal/ent/user"
+	"entdemo/ent"
+	"entdemo/ent/user"
 
 	_ "github.com/lib/pq"
 )

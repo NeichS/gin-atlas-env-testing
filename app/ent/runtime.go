@@ -3,8 +3,8 @@
 package ent
 
 import (
-	"entdemo/internal/ent/schema"
-	"entdemo/internal/ent/user"
+	"entdemo/ent/schema"
+	"entdemo/ent/user"
 )
 
 // The init function reads all schema descriptors with runtime code

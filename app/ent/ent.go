@@ -4,7 +4,7 @@ package ent
 
 import (
 	"context"
-	"entdemo/internal/ent/user"
+	"entdemo/ent/user"
 	"errors"
 	"fmt"
 	"reflect"

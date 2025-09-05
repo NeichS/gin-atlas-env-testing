@@ -4,8 +4,8 @@ package ent
 
 import (
 	"context"
-	"entdemo/internal/ent/predicate"
-	"entdemo/internal/ent/user"
+	"entdemo/ent/predicate"
+	"entdemo/ent/user"
 	"fmt"
 	"math"
 
