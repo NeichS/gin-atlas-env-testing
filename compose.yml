@@ -20,12 +20,12 @@ services:
       # - ./main.go:/app/main.go:rw
     extra_hosts:
       - host.docker.internal:host-gateway
-        
+
   db:
-    build: 
-      context: . 
+    build:
+      context: .
       target: database
-      dockerfile_inline: | 
+      dockerfile_inline: |
         FROM postgres:${POSTGRES_VERSION:-latest} as database
         RUN localedef -i ${LOCALEDEF:-es_AR} -c -f UTF-8 -A /usr/share/locale/locale.alias ${LOCALEDEF:-es_AR}.UTF-8
         ENV LANG ${LOCALEDEF:-es_AR}.utf8
@@ -35,6 +35,8 @@ services:
     volumes:
       - ./docker/volumes/data:/var/lib/postgresql/data
       - ./docker/volumes/backups:/backups
+      - ./docker/init:/docker-entrypoint-initdb.d #
+
     networks:
       - default-network
     env_file:
@@ -42,5 +44,5 @@ services:
 
 networks:
   default-network:
-    external: true  # Indica que es una red externa
+    external: true # Indica que es una red externa
 

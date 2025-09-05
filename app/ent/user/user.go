@@ -4,6 +4,7 @@ package user
 
 import (
 	"entgo.io/ent/dialect/sql"
+	"entgo.io/ent/dialect/sql/sqlgraph"
 )
 
 const (
@@ -15,10 +16,17 @@ const (
 	FieldAge = "age"
 	// FieldName holds the string denoting the name field in the database.
 	FieldName = "name"
-	// FieldUsername holds the string denoting the username field in the database.
-	FieldUsername = "username"
+	// EdgeCars holds the string denoting the cars edge name in mutations.
+	EdgeCars = "cars"
 	// Table holds the table name of the user in the database.
 	Table = "users"
+	// CarsTable is the table that holds the cars relation/edge.
+	CarsTable = "cars"
+	// CarsInverseTable is the table name for the Car entity.
+	// It exists in this package in order to avoid circular dependency with the "car" package.
+	CarsInverseTable = "cars"
+	// CarsColumn is the table column denoting the cars relation/edge.
+	CarsColumn = "user_cars"
 )
 
 // Columns holds all SQL columns for user fields.
@@ -26,7 +34,6 @@ var Columns = []string{
 	FieldID,
 	FieldAge,
 	FieldName,
-	FieldUsername,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -44,8 +51,6 @@ var (
 	AgeValidator func(int) error
 	// DefaultName holds the default value on creation for the "name" field.
 	DefaultName string
-	// UsernameValidator is a validator for the "username" field. It is called by the builders before save.
-	UsernameValidator func(string) error
 )
 
 // OrderOption defines the ordering options for the User queries.
@@ -66,7 +71,23 @@ func ByName(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldName, opts...).ToFunc()
 }
 
-// ByUsername orders the results by the username field.
-func ByUsername(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldUsername, opts...).ToFunc()
+// ByCarsCount orders the results by cars count.
+func ByCarsCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newCarsStep(), opts...)
+	}
+}
+
+// ByCars orders the results by cars terms.
+func ByCars(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newCarsStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
+}
+func newCarsStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(CarsInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.O2M, false, CarsTable, CarsColumn),
+	)
 }

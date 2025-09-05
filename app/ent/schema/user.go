@@ -2,12 +2,13 @@ package schema
 
 import (
 	"entgo.io/ent"
+	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
 )
 
 // User holds the schema definition for the User entity.
 type User struct {
-	ent.Schema
+    ent.Schema
 }
 
 // Fields of the User.
@@ -17,11 +18,13 @@ func (User) Fields() []ent.Field {
             Positive(),
         field.String("name").
             Default("unknown"),
-		field.String("username").Unique().NotEmpty(),
     }
 }
 
 // Edges of the User.
+// Edges of the User.
 func (User) Edges() []ent.Edge {
-	return nil
+    return []ent.Edge{
+        edge.To("cars", Car.Type),
+    }
 }
