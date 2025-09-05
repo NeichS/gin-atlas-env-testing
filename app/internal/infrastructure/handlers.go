@@ -16,10 +16,11 @@ type CreateUserDTO struct {
 func HandleCreateUser(c *gin.Context) {
 	objA := CreateUserDTO{}
 	// This c.ShouldBind consumes c.Request.Body and it cannot be reused.
-	if errA := c.ShouldBindBodyWith(&objA, binding.JSON); errA == nil {
-		c.String(http.StatusOK, `body looking good!`)
+	if err := c.ShouldBindBodyWith(&objA, binding.JSON); err == nil {
+		resp := "user created successfully"
+		c.JSON(http.StatusCreated, gin.H{"status": resp})
 	} else {
-		c.JSON(http.StatusBadRequest, fmt.Sprintf("errA: %v", errA))
+        c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
