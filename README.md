@@ -24,7 +24,7 @@ Cabe destacar que no necesitamos regenerar el esquema cuando no creamos entidade
 
 ## Atlas
 
-Creamos base de datos de desarrollo
+Creamos base de datos de desarrollo para poder crear el plan de migración, siempre se debe hacer con una db limpia/vacia.
 
 ```Shell
 just create-dev-db
