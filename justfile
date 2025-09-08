@@ -40,3 +40,9 @@ inspect:
 	-u "ent://ent/schema" \
 	--dev-url "{{DATABASE_URL}}" \
 	-w
+
+up:
+    docker compose up -d
+
+down:
+    docker compose down
