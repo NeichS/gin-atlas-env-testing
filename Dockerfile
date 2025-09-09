@@ -7,10 +7,7 @@ COPY ./app/ /app
 # eliminamos dependencias no usadas
 RUN go mod tidy 
 
-RUN go install github.com/air-verse/air@latest
-
-# Generar el código de Ent, esto va una sola vez
-# RUN go run -mod=mod entgo.io/ent/cmd/ent new User
+RUN go install github.com/air-verse/air@v1.60.0
 
 # instalar atlas
 RUN curl -sSf https://atlasgo.sh | sh
