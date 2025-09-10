@@ -7,9 +7,10 @@ import (
 
 type DbConn struct {
 	Connstr string
+	Driver  string
 }
 
-func (d *DbConn) InitDatabase() *DbConn {
+func NewDbConn() *DbConn {
 	host := os.Getenv("POSTGRES_HOST")
 	dbPort := os.Getenv("POSTGRES_PORT")
 	usr := os.Getenv("POSTGRES_USER")
@@ -20,5 +21,6 @@ func (d *DbConn) InitDatabase() *DbConn {
 
 	return &DbConn{
 		Connstr: connstr,
+		Driver: "postgres",
 	}
 }

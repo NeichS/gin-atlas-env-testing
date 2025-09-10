@@ -15,11 +15,14 @@ migrate:
       --dir "file://ent/migrate/migrations" \
       --url "$DATABASE_URL" \
 
+login:
+    docker exec -it entdemo-api atlas login
+    
 lint:
-    docker exec -it entdemo-api atlas migrate lint 
-    --dev-url= "$DEV_DATABASE_URL" \
-    --dir="file://ent/migrate/migrations" \
-    --latest=1
+    docker exec -it entdemo-api atlas migrate lint \
+      --dir "file://ent/migrate/migrations" \
+      --dev-url "$DEV_DATABASE_URL" \
+      -w
 
 status:
     docker exec -it entdemo-api atlas migrate status \

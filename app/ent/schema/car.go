@@ -2,6 +2,7 @@ package schema
 
 import (
 	"entgo.io/ent"
+	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
 )
 
@@ -14,11 +15,16 @@ type Car struct {
 func (Car) Fields() []ent.Field {
     return []ent.Field{
         field.String("model"),
+		field.String("brand"),
+		field.String("license_plate").Unique().Nillable(),
         field.Time("registered_at"),
     }
 }
 
 // Edges of the Car.
 func (Car) Edges() []ent.Edge {
-	return nil
+	return []ent.Edge{
+		edge.From("owner", User.Type).
+			Ref("cars").Unique(),
+	}
 }
